@@ -1,0 +1,121 @@
+// Coordenada padrão (Paris)
+const defaultCoordinates = [48.8566, 2.3522]; // Lat e long de Paris
+// Inicializar o mapa com Paris
+const map = L.map('map').setView(defaultCoordinates, 13);
+// Adicionar mapa
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors',
+}).addTo(map);
+// Adicionar marcador
+const marker = L.marker(defaultCoordinates).addTo(map)
+  .bindPopup('Bem-vindo a Paris!');
+// API Key
+const apiKey = "c1e6f9cb70251b8ff3b60ee18f9c0b92";
+// Função para obter as informações do clima
+function getWeather(lat, lon) {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=pt_br`;
+
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (!data || !data.main || !data.weather) {
+        console.error('Dados inesperados da API:', data);
+        alert('Erro ao carregar informações climáticas.');
+        return;
+      }
+
+      const city = data.name;
+      const country = data.sys.country;
+      const temperature = data.main.temp;
+      const tempMax = data.main.temp_max;
+      const tempMin = data.main.temp_min;
+      const humidity = data.main.humidity;
+      const windSpeed = data.wind.speed;
+      const weatherIcon = data.weather[0].icon;
+
+      const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+
+      // Atualizar o DOM com as informações
+      document.getElementById('city-name').innerText = `${city}, ${country}`;
+      document.getElementById('temperature').innerText = `${temperature.toFixed(1)}°C`;
+      document.getElementById('temp-icon').src = iconUrl;
+      document.getElementById('temp-icon').alt = data.weather[0].description;
+      document.getElementById('temp-max').innerText = `${tempMax.toFixed(1)}°C`;
+      document.getElementById('temp-min').innerText = `${tempMin.toFixed(1)}°C`;
+      document.getElementById('humidity').innerText = `${humidity}%`;
+      document.getElementById('wind-speed').innerText = `${windSpeed} km/h`;
+    })
+    .catch(error => {
+      console.error('Erro ao obter dados do clima:', error);
+      alert('Não foi possível obter os dados do clima.');
+    });
+}
+//centralizar no usuário após localização
+function locateUser() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        marker.setLatLng([lat, lon]).update();
+        map.setView([lat, lon], 15);
+
+        getWeather(lat, lon);
+      },
+      (error) => {
+        console.error('Erro ao obter localização:', error);
+        alert('Não foi possível obter sua localização. Verifique suas permissões.');
+      }
+    );
+  } else {
+    alert('Seu navegador não suporta Geolocalização.');
+  }
+}
+
+// Função para buscar a cidade ao clicar no botão ou pressionar Enter
+function searchCity() {
+  const city = document.querySelector('.search-box input').value.trim();
+
+  if (!city) {
+    alert('Por favor, insira o nome de uma cidade.');
+    return;
+  }
+
+  const geocodingUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+
+  fetch(geocodingUrl)
+    .then(response => response.json())
+    .then(data => {
+      if (data.length === 0) {
+        alert('Cidade não encontrada. Tente novamente.');
+        return;
+      }
+
+      const { lat, lon, name, country } = data[0];
+
+      map.setView([lat, lon], 13);
+      marker.setLatLng([lat, lon]).bindPopup(`${name}, ${country}`).openPopup();
+
+      getWeather(lat, lon);
+    })
+    .catch(error => {
+      console.error('Erro ao buscar cidade:', error);
+      alert('Erro ao buscar a cidade. Tente novamente mais tarde.');
+    });
+}
+
+// Adicionar eventos de busca ao botão e à tecla Enter
+document.querySelector('.search-box button').addEventListener('click', searchCity);
+
+document.querySelector('.search-box input').addEventListener('keypress', (event) => {
+  if (event.key === 'Enter') {
+    searchCity();
+  }
+});
+
+// Chamar a localização do usuário ao carregar a página
+locateUser();
+
+// Obter o clima de Paris como padrão
+getWeather(defaultCoordinates[0], defaultCoordinates[1]);
