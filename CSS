@@ -1,0 +1,287 @@
+/* Estilo para o mapa */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+*{
+  font-family: "Roboto";
+}
+#map {
+    height: 100vh;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  
+  
+  /* Estilo para o contêiner de clima */
+  #weather-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 500px; /* Largura do container */
+    height: 100vh;
+    background: rgba(1, 0, 0, 0.7); /* Fundo preto com transparência */
+    color: white;
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  /* Título e textos do clima */
+  #weather-container h3 {
+    margin-top: 0;
+  }
+  
+  #weather-info p {
+    margin: 10px 0;
+  }
+  
+  /* Efeito de transparência do fundo */
+  #weather-container {
+    background: linear-gradient(rgba(0, 0, 0, 0.945), rgba(0, 0, 0, 0.918));
+  }
+  .search-box {
+    position: relative; /* Define que o contêiner será o ponto de referência para os itens posicionados de forma absoluta */
+    top: 10px;
+    left: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 45vh;
+    height: 60px;
+    z-index: 1100;
+    padding: 0 20px;
+  }
+  
+  .search-box input {
+    padding-left: 40px; /* Espaço para o ícone de localização */
+    padding-right:40px; /* Espaço para a lupa */
+    color: #06283D;
+    height: 45px;
+    width: 80%;
+    font-size: 18px;
+    font-weight: 300;
+    padding-left: 12px;
+    border-radius: 30px;
+  }
+  
+  .search-box input::placeholder {
+    padding-left: -4px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #06283D;
+    text-transform: capitalize;
+  }
+  .search-box button {
+    position: absolute; /* Posiciona o ícone dentro do contêiner */; /* Ajuste a posição do ícone */
+    right: 36px;
+    color: #007BFF;
+    width: 20px;
+    
+    font-size: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .search-box button i.fa-solid.fa-magnifying-glass {
+    font-size: 50px !important;
+      /* Tamanho da lupa, ajustado com !important */
+  }
+  .search-box i.fa-solid.fa-location-dot {
+    position: absolute;
+    padding-left: 10px;
+    left: 25px;
+    color: #007BFF; /* Cor do ícone */
+    font-size: 26px; /* Tamanho do ícone */
+    margin-right: 10px; /* Espaçamento entre o ícone e o campo de entrada */
+    transition: color 0.3s ease; /* Efeito suave ao passar o mouse */
+  }
+.location-info,
+.temperature-info {
+    background-color: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+    border: 3px solid rgba(240, 239, 239, 0.836); /* Borda fina branca */
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.3); /* Luz branca suave */
+    backdrop-filter: blur(5px);
+    transition: box-shadow 0.3s ease-in-out;
+}
+.location-info{
+  width: 190px;
+  margin-top: 20px;
+  margin-left: 130px;
+  padding: 0 10px;
+}
+.location-info:hover,
+.temperature-info:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    
+}
+
+/* Cidade e País */
+.location-info #city-name {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+   
+}
+
+/* Temperatura */
+.temperature-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 45px;
+    width: 410px;
+    margin-left:15px;
+    padding: 20px 0;
+}
+
+.temperature-info .temperature {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.temperature-info .temperature-icon img {
+    width: 60px;
+    height: 60px;
+}
+/* Estilização do ícone */
+#temp-icon {
+  width: 100px; /* Largura do ícone */
+  height: 100px; /* Altura do ícone */
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.7)); /* Efeito de luz */
+  margin-left: 50px; /* Espaçamento entre o ícone e outros elementos */
+  margin-top: 20px;
+}
+
+/* Estilização do texto de temperatura */
+#temperature {
+  font-size: 48px; /* Tamanho grande para destaque */
+  font-weight: bold; /* Negrito */
+  color: #ffffff; /* Cor branca */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Sombra leve */
+  margin-right: 60px;
+}
+/* Estilização da linha com temp-max e temp-min */
+.temp-details {
+  display: flex;
+  padding: 5px 20px;
+  width: 40px;
+  height: -80px;
+  margin-top: 10px; /* Espaço entre as linhas */
+}
+
+/* Estilo individual para temp-max e temp-min */
+.temp-max, .temp-min {
+  display: flex;
+  align-items: center;
+  margin: 40px;
+  margin-right:38px;
+  gap: 7px; 
+  background-color: rgba(255, 255, 255, 0.1); /* Fundo semi-transparente */
+  border: 3px solid rgba(240, 239, 239, 0.836); /* Borda fina branca */
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.3); 
+  color: #fff;
+  font-size: 18px; 
+  margin-top: 30px;
+}
+.temp-max{
+  margin-left: -10px;
+  width: 100px;
+  padding: 25px 50px;
+}
+.temp-min{
+  padding: 35px 35px;
+  margin-left: -15px;
+}
+.temp-min:hover,
+.temp-max:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+.temp-max i, .temp-max #temp-max-icon {
+  font-size: 35px; 
+  color: #FF5733; /* Cor do ícone para uma cor quente (vermelho/laranja) */
+  margin-right: 10px; /* Espaço entre o ícone e o texto */
+  filter: drop-shadow(0 0 5px rgba(255, 87, 51, 0.7)); /* Efeito de sombra no ícone */
+  transition: color 0.3s ease; /* Transição suave para mudança de cor *//* Transição suave para mudança de cor */
+}
+.temp-min i, .temp-min #temp-min-icon {
+  font-size: 35px; 
+  color: #00BFFF; /* Cor do ícone para uma cor fria (azul) */
+  margin-left: 10px; /* Espaço entre o ícone e o texto */
+  filter: drop-shadow(0 0 5px rgba(0, 191, 255, 0.7)); /* Efeito de sombra no ícone */
+  transition: color 0.3s ease; /* Transição suave para mudança de cor */
+}
+
+/* Efeito ao passar o mouse sobre os ícones */
+.temp-max i:hover, .temp-min i:hover {
+  color: #FFD700; /* Mudança de cor ao passar o mouse (dourado) */
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.8)); /* Sombra mais intensa ao passar o mouse */
+}
+.temp-min span {
+  font-size: 23px;
+}
+.temp-max span {
+  font-size: 23px;
+}
+/* Estilo para o contêiner das caixas de humidade e vento */
+.weather-details {
+  display: flex;
+  padding: 1px 10px;
+  width: 50px;
+  height: -80px;
+  margin-top: 15px;
+}
+
+/* Estilo para o bloco de Humidade */
+.humidity-info, .wind-info {
+  display: flex;
+  align-items: center;
+  margin: 40px;
+  margin-right:38px;
+  gap: 10px; 
+  background-color: rgba(255, 255, 255, 0.1);  
+  border: 3px solid rgba(240, 239, 239, 0.836);
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px rgba(255, 255, 255, 0.3); 
+  color: #fff;
+  font-size: 17px; 
+  margin-top: -30px;
+}
+#wind-speed{
+  width: 200px;
+}
+
+.humidity-info{
+  margin-left: 2px;
+  width: 180px;
+  padding: 43px 57px;
+}
+.wind-info{
+  padding: 38px 6px;
+  width: 180px;
+  margin-left: -10px;
+}
+.humidity-info:hover,
+.wind-info:hover {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+}
+.humidity-info i, .humidity #humidity-icon {
+  font-size: 30px;
+}
+.humidity-info span {
+  font-size: 20px;
+}
+.wind-info i, .wind-speed #wind-icon {
+  font-size: 30px;
+  margin-left: 26px;
+}
+.wind-info span {
+  font-size: 20px;
+
+}
